@@ -1,5 +1,8 @@
 # examen2IS
 Examen 2 de ingenería de software
+Integrantes :            
+Sergio Sotil Lozada            
+José Barrenechea Merino
 
 python3 -m coverage run      
 Output:      
