@@ -4,7 +4,7 @@ Examen 2 de ingenería de software
 
 python3 -m coverage run      
 Output:      
-![Pytest1](images/pst.png)
+![Pytest1](images/pts.png)
 python3 -m coverage report      
 Output:      
 ![Pytest2](images/pytest2.png)
