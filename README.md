@@ -7,4 +7,4 @@ Output:
 ![Pytest1](images/pst.png)
 python3 -m coverage report      
 Output:      
-![Pytest1](images/pytest2.png)
+![Pytest2](images/pytest2.png)
