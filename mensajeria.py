@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+
 app = Flask(__name__)
 
 class Usuario:
@@ -6,7 +7,7 @@ class Usuario:
         self.alias = alias
         self.nombre = nombre
         self.contactos = contactos if contactos else []
-        self.mensajes = []
+        self.mensajes = [] 
 
     def agregar_contacto(self, contacto):
         if contacto not in self.contactos:
@@ -21,6 +22,8 @@ class Usuario:
     def recibir_mensaje(self, mensaje):
         self.mensajes.append(mensaje)
 
+    def ver_mensajes_enviados(self):
+        return [{"contacto": m["contacto"], "mensaje": m["mensaje"]} for m in self.mensajes]
 
 BD = [
     Usuario("cpaz", "Christian", ["lmunoz", "mgrau"]),
@@ -43,8 +46,6 @@ def agregar_contacto(alias):
     data = request.get_json()
     contacto = data['contacto']
     nombre = data['nombre']
-    
-    # Buscar si el alias existe
     usuario = next((u for u in BD if u.alias == alias), None)
     
     if usuario:
@@ -66,8 +67,7 @@ def enviar_mensaje():
     contacto = next((u for u in BD if u.alias == contacto_alias), None)
     
     if usuario and contacto and contacto_alias in usuario.contactos:
-        mensaje_info = {"usuario": usuario.nombre, "mensaje": mensaje}
-        contacto.recibir_mensaje(mensaje_info)
+        usuario.enviar_mensaje(contacto_alias, mensaje)
         return jsonify({"message": "Mensaje enviado exitosamente"})
     else:
         return jsonify({"error": "Usuario o contacto no encontrado o no está en los contactos"}), 400
@@ -80,6 +80,18 @@ def recibir_mensajes():
     if usuario:
         mensajes = [{"usuario": m["usuario"], "mensaje": m["mensaje"]} for m in usuario.mensajes]
         return jsonify(mensajes)
+    else:
+        return jsonify({"error": "Usuario no encontrado"}), 404
+
+
+@app.route('/mensajeria/enviados', methods=['GET'])
+def ver_mensajes_enviados():
+    mialias = request.args.get('mialias')
+    usuario = next((u for u in BD if u.alias == mialias), None)
+    
+    if usuario:
+        mensajes_enviados = usuario.ver_mensajes_enviados()
+        return jsonify(mensajes_enviados)
     else:
         return jsonify({"error": "Usuario no encontrado"}), 404
 
