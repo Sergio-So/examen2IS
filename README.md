@@ -2,6 +2,7 @@
 Examen 2 de ingenería de software
 1. Agregar contacto : ![Uploading image.png…]()
 
+2. pytests:            
 python3 -m coverage run      
 Output:      
 ![Pytest1](images/pts.png)
